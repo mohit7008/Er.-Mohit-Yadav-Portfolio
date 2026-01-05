@@ -1,0 +1,1171 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Mohit Yadav - 3D Interactive Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #00f5ff;
+      --secondary: #ff00ff;
+      --tertiary: #ffdd00;
+      --dark: #0a0a0f;
+      --darker: #05050a;
+      --card: rgba(255, 255, 255, 0.03);
+      --glass: rgba(255, 255, 255, 0.08);
+      --text: #e8e8f0;
+      --text-dim: #a0a0b8;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--dark);
+      color: var(--text);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* Animated Background Grid */
+    .bg-grid {
+      position: fixed;
+      inset: 0;
+      background-image: 
+        linear-gradient(var(--primary) 1px, transparent 1px),
+        linear-gradient(90deg, var(--primary) 1px, transparent 1px);
+      background-size: 50px 50px;
+      opacity: 0.03;
+      animation: gridMove 20s linear infinite;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    @keyframes gridMove {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(50px, 50px); }
+    }
+
+    /* Gradient Orbs */
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(100px);
+      opacity: 0.4;
+      pointer-events: none;
+      z-index: 0;
+      animation: float 20s infinite ease-in-out;
+    }
+
+    .orb1 {
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, var(--primary), transparent);
+      top: -200px;
+      left: -200px;
+      animation-delay: 0s;
+    }
+
+    .orb2 {
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, var(--secondary), transparent);
+      bottom: -150px;
+      right: -150px;
+      animation-delay: 7s;
+    }
+
+    .orb3 {
+      width: 350px;
+      height: 350px;
+      background: radial-gradient(circle, var(--tertiary), transparent);
+      top: 40%;
+      right: 10%;
+      animation-delay: 14s;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(50px, -80px) scale(1.1); }
+      66% { transform: translate(-30px, 60px) scale(0.9); }
+    }
+
+    /* Header */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      padding: 1.5rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(10, 10, 15, 0.8);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(0, 245, 255, 0.1);
+      z-index: 100;
+    }
+
+    .logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 40px rgba(0, 245, 255, 0.3);
+    }
+
+    nav {
+      display: flex;
+      gap: 2rem;
+    }
+
+    nav a {
+      color: var(--text-dim);
+      text-decoration: none;
+      font-weight: 600;
+      position: relative;
+      transition: color 0.3s;
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--primary);
+      transition: width 0.3s;
+    }
+
+    nav a:hover {
+      color: var(--primary);
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    /* Main Container */
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Hero Section */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 4rem;
+      padding-top: 5rem;
+    }
+
+    .hero-content {
+      flex: 1;
+      max-width: 600px;
+    }
+
+    .hero-tag {
+      display: inline-block;
+      padding: 0.5rem 1.5rem;
+      background: rgba(0, 245, 255, 0.1);
+      border: 1px solid var(--primary);
+      border-radius: 50px;
+      color: var(--primary);
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(0, 245, 255, 0.4); }
+      50% { box-shadow: 0 0 0 15px rgba(0, 245, 255, 0); }
+    }
+
+    .hero h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 4.5rem;
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, #fff, var(--primary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero .highlight {
+      display: block;
+      background: linear-gradient(135deg, var(--primary), var(--secondary), var(--tertiary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: hueRotate 5s linear infinite;
+    }
+
+    @keyframes hueRotate {
+      0% { filter: hue-rotate(0deg); }
+      100% { filter: hue-rotate(360deg); }
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      color: var(--text-dim);
+      margin-bottom: 2.5rem;
+      line-height: 1.8;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .btn {
+      padding: 1rem 2.5rem;
+      font-weight: 700;
+      border-radius: 12px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.3s;
+      cursor: pointer;
+      border: none;
+      font-size: 1rem;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: var(--dark);
+      box-shadow: 0 10px 40px rgba(0, 245, 255, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 50px rgba(0, 245, 255, 0.5);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text);
+      border: 2px solid var(--primary);
+      backdrop-filter: blur(10px);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(0, 245, 255, 0.1);
+      transform: translateY(-3px);
+    }
+
+    /* 3D Canvas */
+    .hero-3d {
+      flex: 1;
+      height: 600px;
+      position: relative;
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(0, 245, 255, 0.2);
+      overflow: hidden;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+    }
+
+    #canvas3d {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .canvas-info {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(10px);
+      padding: 0.8rem 1.5rem;
+      border-radius: 50px;
+      border: 1px solid var(--primary);
+      color: var(--primary);
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    /* Section Styles */
+    section {
+      padding: 8rem 0;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .section-tag {
+      display: inline-block;
+      color: var(--primary);
+      font-weight: 700;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 1rem;
+    }
+
+    .section-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .section-description {
+      color: var(--text-dim);
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Project Cards */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 2rem;
+    }
+
+    .project-card {
+      background: var(--card);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s;
+      cursor: pointer;
+    }
+
+    .project-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+
+    .project-card:hover {
+      transform: translateY(-10px);
+      border-color: var(--primary);
+      box-shadow: 0 20px 60px rgba(0, 245, 255, 0.2);
+    }
+
+    .project-card:hover::before {
+      opacity: 0.05;
+    }
+
+    .project-icon {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .project-card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .project-card p {
+      color: var(--text-dim);
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .tag {
+      padding: 0.4rem 1rem;
+      background: rgba(0, 245, 255, 0.1);
+      border: 1px solid rgba(0, 245, 255, 0.3);
+      border-radius: 50px;
+      font-size: 0.85rem;
+      color: var(--primary);
+    }
+
+    /* Skills Section */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+
+    .skill-card {
+      background: var(--card);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+      padding: 2rem;
+      text-align: center;
+      transition: all 0.3s;
+    }
+
+    .skill-card:hover {
+      border-color: var(--primary);
+      transform: translateY(-5px);
+      box-shadow: 0 15px 40px rgba(0, 245, 255, 0.15);
+    }
+
+    .skill-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .skill-card h3 {
+      font-size: 1.3rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .skill-level {
+      width: 100%;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 1rem;
+    }
+
+    .skill-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      border-radius: 10px;
+      transition: width 1s ease;
+      box-shadow: 0 0 20px var(--primary);
+    }
+
+    /* Contact Section */
+    .contact-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .contact-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 1.5rem;
+      background: var(--card);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      transition: all 0.3s;
+    }
+
+    .contact-item:hover {
+      border-color: var(--primary);
+      transform: translateX(10px);
+    }
+
+    .contact-icon {
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+    }
+
+    .contact-item a {
+      color: var(--text);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .contact-item a:hover {
+      color: var(--primary);
+    }
+
+    /* Footer */
+    footer {
+      padding: 3rem 0;
+      text-align: center;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      color: var(--text-dim);
+    }
+
+    /* Responsive */
+    @media (max-width: 968px) {
+      .hero {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .hero h1 {
+        font-size: 3rem;
+      }
+
+      .hero-buttons {
+        justify-content: center;
+      }
+
+      .hero-3d {
+        width: 100%;
+        height: 400px;
+      }
+
+      .contact-content {
+        grid-template-columns: 1fr;
+      }
+
+      nav {
+        gap: 1rem;
+      }
+
+      .section-title {
+        font-size: 2.2rem;
+      }
+    }
+
+    /* Scroll Reveal Animation */
+    .reveal {
+      opacity: 0;
+      transform: translateY(50px);
+      transition: all 0.8s ease;
+    }
+
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
+  <div class="bg-grid"></div>
+
+  <header>
+    <div class="logo">MOHIT YADAV</div>
+    <nav>
+      <a href="#home">Home</a>
+      <a href="#about">About</a>
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="home">
+      <div class="container">
+        <div class="hero">
+          <div class="hero-content">
+            <div class="hero-tag">👋 Available for Work</div>
+            <h1>
+              Hi, I'm Mohit
+              <span class="highlight">Android Developer</span>
+            </h1>
+           <p>
+Android App Developer with hands-on experience through professional apprenticeship and certified
+Android training. Strong foundation in Java, XML, Firebase, REST APIs, and Android Studio.
+Seeking an entry-level Android Developer / Trainee role to build scalable, user-centric apps.
+</p>
+            <div class="hero-buttons">
+              <button class="btn btn-primary" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
+                Get In Touch →
+              </button>
+              <button class="btn btn-secondary" onclick="document.getElementById('projects').scrollIntoView({behavior:'smooth'})">
+                View Projects
+              </button>
+            </div>
+          </div>
+          <div class="hero-3d">
+            <canvas id="canvas3d"></canvas>
+            <div class="canvas-info">🖱️ Drag to rotate • Scroll to zoom</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about">
+      <div class="container">
+        <div class="section-header reveal">
+          <div class="section-tag">Who I Am</div>
+          <h2 class="section-title">About Me</h2>
+          <p class="section-description">Passionate Android developer with a strong foundation in mobile app development and user experience design.</p>
+        </div>
+
+        <div class="contact-content">
+          <div class="reveal">
+            <div style="background: var(--card); border: 1px solid rgba(0,245,255,0.2); border-radius: 20px; padding: 3rem;">
+              <div style="display: flex; align-items: center; gap: 2rem; margin-bottom: 2rem;">
+                <div style="width: 120px; height: 120px; border-radius: 20px; background: linear-gradient(135deg, var(--primary), var(--secondary)); display: flex; align-items: center; justify-content: center; font-size: 3rem; font-weight: 900; color: var(--dark); box-shadow: 0 10px 40px rgba(0,245,255,0.3);">
+                  MY
+                </div>
+                <div>
+                  <h3 style="font-size: 2rem; margin-bottom: 0.5rem;">Mohit Yadav</h3>
+                  <p style="color: var(--primary); font-size: 1.2rem; font-weight: 600;">Android Developer</p>
+                </div>
+              </div>
+              
+              <p style="color: var(--text-dim); line-height: 1.8; margin-bottom: 1.5rem;">
+                I'm a motivated Android developer with a <strong style="color: var(--text);">Diploma in Computer Science Engineering</strong>. My journey in mobile development has been driven by a passion for creating seamless, intuitive applications that users love.
+              </p>
+              
+              <p style="color: var(--text-dim); line-height: 1.8; margin-bottom: 1.5rem;">
+                I have completed a <strong style="color: var(--text);">3+ month internship (September 2025)</strong> and <strong style="color: var(--text);">45 days of summer training (July 2024)</strong>, gaining hands-on experience in real-world Android development projects.
+              </p>
+
+              <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-top: 2rem;">
+                <div style="padding: 1rem; background: rgba(0,245,255,0.05); border-radius: 12px; border: 1px solid rgba(0,245,255,0.1);">
+                  <div style="color: var(--primary); font-size: 0.85rem; font-weight: 600; margin-bottom: 0.3rem;">EDUCATION</div>
+                  <div style="font-weight: 600;">Diploma in CSE</div>
+                </div>
+                <div style="padding: 1rem; background: rgba(0,245,255,0.05); border-radius: 12px; border: 1px solid rgba(0,245,255,0.1);">
+                  <div style="color: var(--primary); font-size: 0.85rem; font-weight: 600; margin-bottom: 0.3rem;">EXPERIENCE</div>
+                  <div style="font-weight: 600;">6+ Months</div>
+                </div>
+                <div style="padding: 1rem; background: rgba(0,245,255,0.05); border-radius: 12px; border: 1px solid rgba(0,245,255,0.1);">
+                  <div style="color: var(--primary); font-size: 0.85rem; font-weight: 600; margin-bottom: 0.3rem;">LOCATION</div>
+                  <div style="font-weight: 600;">Lucknow, India</div>
+                </div>
+                <div style="padding: 1rem; background: rgba(0,245,255,0.05); border-radius: 12px; border: 1px solid rgba(0,245,255,0.1);">
+                  <div style="color: var(--primary); font-size: 0.85rem; font-weight: 600; margin-bottom: 0.3rem;">FOCUS</div>
+                  <div style="font-weight: 600;">Android & Firebase</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="reveal">
+            <h3 style="font-size: 1.8rem; margin-bottom: 1.5rem;">What I Bring to the Table</h3>
+            
+            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+              <div class="contact-item" style="cursor: default; transform: none;">
+                <div class="contact-icon">💡</div>
+                <div>
+                  <strong style="font-size: 1.1rem;">Problem Solver</strong><br>
+                  <span style="color: var(--text-dim);">Strong analytical skills with a focus on efficient, scalable solutions</span>
+                </div>
+              </div>
+
+              <div class="contact-item" style="cursor: default; transform: none;">
+                <div class="contact-icon">🎨</div>
+                <div>
+                  <strong style="font-size: 1.1rem;">UI/UX Enthusiast</strong><br>
+                  <span style="color: var(--text-dim);">Passionate about creating beautiful, user-friendly interfaces</span>
+                </div>
+              </div>
+
+              <div class="contact-item" style="cursor: default; transform: none;">
+                <div class="contact-icon">🚀</div>
+                <div>
+                  <strong style="font-size: 1.1rem;">Fast Learner</strong><br>
+                  <span style="color: var(--text-dim);">Quick to adapt to new technologies and frameworks</span>
+                </div>
+              </div>
+
+              <div class="contact-item" style="cursor: default; transform: none;">
+                <div class="contact-icon">🤝</div>
+                <div>
+                  <strong style="font-size: 1.1rem;">Team Player</strong><br>
+                  <span style="color: var(--text-dim);">Excellent collaboration and communication skills</span>
+                </div>
+              </div>
+            </div>
+
+            <div style="margin-top: 2rem; padding: 1.5rem; background: rgba(255,221,0,0.05); border: 1px solid rgba(255,221,0,0.2); border-radius: 12px;">
+              <p style="color: var(--text); line-height: 1.7; margin: 0;">
+                <strong style="color: var(--tertiary);">💼 Currently seeking:</strong> Exciting opportunities in Android development where I can contribute to innovative projects and continue growing as a developer.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects">
+      <div class="container">
+        <div class="section-header reveal">
+          <div class="section-tag">Portfolio</div>
+          <h2 class="section-title">Featured Projects</h2>
+          <p class="section-description">Showcasing my best work in Android development, from AI-powered assistants to real-time applications.</p>
+        </div>
+
+        <div class="projects-grid">
+          <div class="project-card reveal">
+            <div class="project-icon">🤖</div>
+            <h3>Virtual Assistant Chat App</h3>
+            <p>Automated chatbot for answering user queries using Gemini API with real-time responses and interactive UI. Intelligent conversational assistant with natural language processing, reminders, and local storage capabilities.</p>
+            <div class="project-tags">
+              <span class="tag">Java</span>
+              <span class="tag">XML</span>
+              <span class="tag">API Integration</span>
+              <span class="tag">NLP</span>
+            </div>
+          </div>
+
+          <div class="project-card reveal">
+            <div class="project-icon">🌤️</div>
+            <h3>Weather Forecast App</h3>
+            <p>Location-based weather application with real-time updates, intelligent caching, and beautiful animated UI transitions.</p>
+            <div class="project-tags">
+              <span class="tag">REST API</span>
+              <span class="tag">Animations</span>
+              <span class="tag">Geolocation</span>
+            </div>
+          </div>
+
+          <div class="project-card reveal">
+            <div class="project-icon">🚗</div>
+            <h3>Car Rental Platform</h3>
+            <p>Full-featured car rental app with Firebase backend, user authentication, real-time booking, and payment integration.</p>
+            <div class="project-tags">
+              <span class="tag">Firebase</span>
+              <span class="tag">Auth</span>
+              <span class="tag">Realtime DB</span>
+              <span class="tag">Payments</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="skills">
+      <div class="container">
+        <div class="section-header reveal">
+          <div class="section-tag">Expertise</div>
+          <h2 class="section-title">Technical Skills</h2>
+          <p class="section-description">Proficient in modern Android development with a focus on performance and user experience.</p>
+        </div>
+
+        <div class="skills-grid">
+          <div class="skill-card reveal">
+            <div class="skill-icon">📱</div>
+            <h3>Android Development</h3>
+            <div class="skill-level">
+              <div class="skill-bar" style="width: 0" data-width="92%"></div>
+            </div>
+          </div>
+
+          <div class="skill-card reveal">
+            <div class="skill-icon">☕</div>
+            <h3>Java & OOP</h3>
+            <div class="skill-level">
+              <div class="skill-bar" style="width: 0" data-width="90%"></div>
+            </div>
+          </div>
+
+          <div class="skill-card reveal">
+            <div class="skill-icon">🔥</div>
+            <h3>Firebase</h3>
+            <div class="skill-level">
+              <div class="skill-bar" style="width: 0" data-width="85%"></div>
+            </div>
+          </div>
+
+          <div class="skill-card reveal">
+            <div class="skill-icon">🎨</div>
+            <h3>UI/UX Design</h3>
+            <div class="skill-level">
+              <div class="skill-bar" style="width: 0" data-width="88%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="container">
+        <div class="section-header reveal">
+          <div class="section-tag">Connect</div>
+          <h2 class="section-title">Let's Work Together</h2>
+          <p class="section-description">Have a project in mind? Let's create something amazing together.</p>
+        </div>
+
+        <div class="contact-content">
+          <div class="contact-info reveal">
+            <div style="margin-bottom: 2rem;">
+              <h3 style="font-size: 1.8rem; margin-bottom: 1rem;">Contact Information</h3>
+              <p style="color: var(--text-dim); line-height: 1.7;">Feel free to reach out through any of these channels or use the form to send me a message directly.</p>
+            </div>
+
+            <div class="contact-item">
+              <div class="contact-icon">📧</div>
+              <div>
+                <strong>Email</strong><br>
+                <a href="mailto:mohityaduvanshi871@gmail.com">mohityaduvanshi871@gmail.com</a>
+              </div>
+            </div>
+
+            <div class="contact-item">
+              <div class="contact-icon">📱</div>
+              <div>
+                <strong>Phone</strong><br>
+                <a href="tel:+918881019629">+91-8881019629</a>
+              </div>
+            </div>
+
+            <div class="contact-item">
+              <div class="contact-icon">💼</div>
+              <div>
+                <strong>LinkedIn</strong><br>
+                <a href="https://linkedin.com/in/mohityadav4169" target="_blank">linkedin.com/in/mohityadav4169</a>
+              </div>
+            </div>
+
+            <div class="contact-item">
+              <div class="contact-icon">📍</div>
+              <div>
+                <strong>Location</strong><br>
+                <span style="color: var(--text-dim);">Lucknow, Uttar Pradesh, India</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="reveal">
+            <form id="contactForm" style="background: var(--card); border: 1px solid rgba(0,245,255,0.2); border-radius: 20px; padding: 2.5rem;">
+              <h3 style="font-size: 1.8rem; margin-bottom: 1.5rem;">Send Me a Message</h3>
+              
+              <div style="margin-bottom: 1.5rem;">
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text);">Your Name *</label>
+                <input 
+                  type="text" 
+                  name="name" 
+                  required 
+                  placeholder="John Doe"
+                  style="width: 100%; padding: 1rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; color: var(--text); font-size: 1rem; transition: all 0.3s;"
+                  onfocus="this.style.borderColor='var(--primary)'; this.style.background='rgba(0,245,255,0.05)'"
+                  onblur="this.style.borderColor='rgba(255,255,255,0.1)'; this.style.background='rgba(255,255,255,0.05)'"
+                />
+              </div>
+
+              <div style="margin-bottom: 1.5rem;">
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text);">Your Email *</label>
+                <input 
+                  type="email" 
+                  name="email" 
+                  required 
+                  placeholder="john@example.com"
+                  style="width: 100%; padding: 1rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; color: var(--text); font-size: 1rem; transition: all 0.3s;"
+                  onfocus="this.style.borderColor='var(--primary)'; this.style.background='rgba(0,245,255,0.05)'"
+                  onblur="this.style.borderColor='rgba(255,255,255,0.1)'; this.style.background='rgba(255,255,255,0.05)'"
+                />
+              </div>
+
+              <div style="margin-bottom: 1.5rem;">
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text);">Subject *</label>
+                <input 
+                  type="text" 
+                  name="subject" 
+                  required 
+                  placeholder="Project Inquiry"
+                  style="width: 100%; padding: 1rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; color: var(--text); font-size: 1rem; transition: all 0.3s;"
+                  onfocus="this.style.borderColor='var(--primary)'; this.style.background='rgba(0,245,255,0.05)'"
+                  onblur="this.style.borderColor='rgba(255,255,255,0.1)'; this.style.background='rgba(255,255,255,0.05)'"
+                />
+              </div>
+
+              <div style="margin-bottom: 1.5rem;">
+                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text);">Message *</label>
+                <textarea 
+                  name="message" 
+                  required 
+                  rows="5"
+                  placeholder="Tell me about your project..."
+                  style="width: 100%; padding: 1rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; color: var(--text); font-size: 1rem; resize: vertical; transition: all 0.3s; font-family: inherit;"
+                  onfocus="this.style.borderColor='var(--primary)'; this.style.background='rgba(0,245,255,0.05)'"
+                  onblur="this.style.borderColor='rgba(255,255,255,0.1)'; this.style.background='rgba(255,255,255,0.05)'"
+                ></textarea>
+              </div>
+
+              <button type="submit" class="btn btn-primary" style="width: 100%;">
+                <span id="btnText">Send Message →</span>
+              </button>
+
+              <div id="formMessage" style="margin-top: 1rem; padding: 1rem; border-radius: 10px; display: none;"></div>
+            </form>
+          </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 3rem;" class="reveal">
+          <div style="background: var(--card); border: 1px solid rgba(0,245,255,0.2); border-radius: 20px; padding: 2rem; display: inline-block;">
+            <h3 style="font-size: 1.5rem; margin-bottom: 1rem;">Prefer a Direct Download?</h3>
+            <p style="color: var(--text-dim); margin-bottom: 1.5rem;">Get my complete CV with all project details and experience.</p>
+            <button class="btn btn-primary" id="downloadCV">
+  Download CV →
+</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 Mohit Yadav. Crafted with passion and code.</p>
+    </div>
+  </footer>
+
+  <!-- EmailJS SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <script>
+    // Initialize EmailJS
+    (function() {
+      emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your EmailJS public key
+    })();
+  </script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script>
+    // Three.js 3D Scene
+    const canvas = document.getElementById('canvas3d');
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    
+    renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    camera.position.z = 5;
+
+    // Create geometric shape
+    const geometry = new THREE.IcosahedronGeometry(1.5, 0);
+    const material = new THREE.MeshNormalMaterial({ wireframe: false, flatShading: true });
+    const mesh = new THREE.Mesh(geometry, material);
+    scene.add(mesh);
+
+    // Create wireframe
+    const wireGeo = new THREE.IcosahedronGeometry(1.52, 0);
+    const wireMat = new THREE.MeshBasicMaterial({ color: 0x00f5ff, wireframe: true, transparent: true, opacity: 0.3 });
+    const wireMesh = new THREE.Mesh(wireGeo, wireMat);
+    scene.add(wireMesh);
+
+    // Particles
+    const particlesGeometry = new THREE.BufferGeometry();
+    const particlesCount = 200;
+    const posArray = new Float32Array(particlesCount * 3);
+    
+    for(let i = 0; i < particlesCount * 3; i++) {
+      posArray[i] = (Math.random() - 0.5) * 10;
+    }
+    
+    particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+    const particlesMaterial = new THREE.PointsMaterial({
+      size: 0.03,
+      color: 0x00f5ff,
+      transparent: true,
+      opacity: 0.6
+    });
+    const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+    scene.add(particlesMesh);
+
+    // Mouse interaction
+    let mouseX = 0;
+    let mouseY = 0;
+    
+    document.addEventListener('mousemove', (e) => {
+      mouseX = (e.clientX / window.innerWidth) * 2 - 1;
+      mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
+    });
+
+    // Animation
+    function animate() {
+      requestAnimationFrame(animate);
+      
+      mesh.rotation.x += 0.003;
+      mesh.rotation.y += 0.005;
+      
+      wireMesh.rotation.x += 0.002;
+      wireMesh.rotation.y += 0.004;
+      
+      particlesMesh.rotation.y += 0.001;
+      
+      camera.position.x += (mouseX * 0.5 - camera.position.x) * 0.05;
+      camera.position.y += (mouseY * 0.5 - camera.position.y) * 0.05;
+      
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    // Resize handler
+    window.addEventListener('resize', () => {
+      camera.aspect = canvas.clientWidth / canvas.clientHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+    });
+
+    // Scroll reveal animation
+    const reveals = document.querySelectorAll('.reveal');
+    
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    reveals.forEach(reveal => revealObserver.observe(reveal));
+
+    // Animate skill bars
+    const skillBars = document.querySelectorAll('.skill-bar');
+    const skillObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const bar = entry.target;
+          setTimeout(() => {
+            bar.style.width = bar.dataset.width;
+          }, 200);
+        }
+      });
+    }, { threshold: 0.5 });
+
+    skillBars.forEach(bar => skillObserver.observe(bar));
+
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+
+    // Download CV functionality
+    document.addEventListener('DOMContentLoaded', function () {
+
+  const downloadBtn = document.getElementById('downloadCV');
+
+  downloadBtn.addEventListener('click', function () {
+
+    const link = document.createElement('a');
+    
+    // 🔴 EXACT file name (same folder as index.html)
+    link.href = 'Mohit Yadav -Android-Developer.pdf';
+    link.download = 'Mohit_Yadav_Android_Developer_CV.pdf';
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    // ✅ UI feedback
+    const originalText = downloadBtn.innerHTML;
+    downloadBtn.innerHTML = '✓ Downloaded';
+    downloadBtn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+
+    setTimeout(() => {
+      downloadBtn.innerHTML = originalText;
+      downloadBtn.style.background =
+        'linear-gradient(135deg, var(--primary), var(--secondary))';
+    }, 2000);
+  });
+
+});
+  
+    // Contact Form Submission with EmailJS
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const btn = this.querySelector('button[type="submit"]');
+      const btnText = document.getElementById('btnText');
+      const formMessage = document.getElementById('formMessage');
+      const originalBtnText = btnText.innerHTML;
+      
+      // Disable button and show loading
+      btn.disabled = true;
+      btnText.innerHTML = '⏳ Sending...';
+      formMessage.style.display = 'none';
+      
+      // Get form data
+      const formData = {
+        name: this.name.value,
+        email: this.email.value,
+        subject: this.subject.value,
+        message: this.message.value
+      };
+      
+      // Send email using EmailJS
+      emailjs.send('service_8v1m45g', 'template_portfolio', {
+        from_name: formData.name,
+        from_email: formData.email,
+        subject: formData.subject,
+        message: formData.message,
+        to_email: 'mohityaduvanshi871@gmail.com'
+      })
+      .then(function(response) {
+        // Success
+        formMessage.style.display = 'block';
+        formMessage.style.background = 'rgba(16, 185, 129, 0.1)';
+        formMessage.style.border = '1px solid rgba(16, 185, 129, 0.3)';
+        formMessage.style.color = '#10b981';
+        formMessage.innerHTML = '✓ Message sent successfully! I\'ll get back to you soon.';
+        
+        // Reset form
+        document.getElementById('contactForm').reset();
+        
+        // Reset button
+        btn.disabled = false;
+        btnText.innerHTML = '✓ Sent!';
+        btn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+        
+        setTimeout(() => {
+          btnText.innerHTML = originalBtnText;
+          btn.style.background = 'linear-gradient(135deg, var(--primary), var(--secondary))';
+          formMessage.style.display = 'none';
+        }, 5000);
+      })
+      .catch(function(error) {
+        // Error
+        formMessage.style.display = 'block';
+        formMessage.style.background = 'rgba(239, 68, 68, 0.1)';
+        formMessage.style.border = '1px solid rgba(239, 68, 68, 0.3)';
+        formMessage.style.color = '#ef4444';
+        formMessage.innerHTML = '✗ Failed to send message. Please try again or email me directly.';
+        
+        // Reset button
+        btn.disabled = false;
+        btnText.innerHTML = originalBtnText;
+        
+        console.error('EmailJS Error:', error);
+      });
+    });
+  </script>
+</body>
+</html>
